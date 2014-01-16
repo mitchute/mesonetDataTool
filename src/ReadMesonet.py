@@ -18,10 +18,12 @@ line = f.readline()
 
 #while there are lines...
 while line:
+
     ##skip the header lines
     if headerlines > 0:
         line = f.readline()
         headerlines -= 1
+
     ##read the rest of the lines in the file
     else:
         ##read the line and decode the bytes into unicode
@@ -30,5 +32,12 @@ while line:
 
         #strip the line endings and split the line into tokens
         tokens = line.strip().split()
-        
+
         print(tokens[0])
+
+        ##ends the read after the last data line.
+            ##probably needs to be a better way to do this.
+        if tokens[0] == "WYNO":
+            break
+        
+        
