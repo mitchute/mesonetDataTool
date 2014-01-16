@@ -8,20 +8,27 @@ if "linux" in sys.platform:
 elif "win" in sys.platform:
     platform = "windows"
 
-# we can wrap the imports in try blocks to cleanly report on missing things
-try:
-    import urllib
-except:
-    print "Could not import urllib, need to install it!!"
-
 ##array and variable initialization here
 vals = []
 
 ##src URL link
 link = "http://www.mesonet.org/index.php/dataMdfMts/dataController/getFile/201401150000/mdf/TEXT/"
 
-#open the URL
-f = urllib.urlopen(link)
+if python_version > 3:
+    # we can wrap the imports in try blocks to cleanly report on missing things
+    try:
+        import urllib.request
+        #open the URL
+        f = urllib.request.urlopen(link)
+    except:
+        print("Could not import urllib, need to install it!!")
+else:
+    try:
+        import urllib
+        #open the URL
+        f = urllib2.urlopen(link)
+    except:
+        print("Could not import urllib, need to install it!!")
 
 ##number of header line in the MESONET text data files
 headerlines = 3
@@ -40,7 +47,7 @@ while line:
     ##read the rest of the lines in the file
     else:
         
-        line = f.readline()
+        line = f.readline().decode()
         
         if line[0] == "<":
             break
