@@ -1,5 +1,18 @@
-## import libraries here
-import urllib.request
+#!/usr/bin/env python
+
+# as a precursor, find out the python version and system platform in case they need to be checked
+import sys
+python_version = float("%s.%s" % (sys.version_info.major, sys.version_info.minor))
+if "linux" in sys.platform:
+    platform = "linux"
+elif "win" in sys.platform:
+    platform = "windows"
+
+# we can wrap the imports in try blocks to cleanly report on missing things
+try:
+    import urllib
+except:
+    print "Could not import urllib, need to install it!!"
 
 ##array and variable initialization here
 vals = []
@@ -7,8 +20,8 @@ vals = []
 ##src URL link
 link = "http://www.mesonet.org/index.php/dataMdfMts/dataController/getFile/201401150000/mdf/TEXT/"
 
-##open the URL
-f = urllib.request.urlopen(link)
+#open the URL
+f = urllib.urlopen(link)
 
 ##number of header line in the MESONET text data files
 headerlines = 3
@@ -26,18 +39,15 @@ while line:
 
     ##read the rest of the lines in the file
     else:
-        ##read the line and decode the bytes into unicode
-            ##see stackoverflow example: http://stackoverflow.com/questions/13857856/split-byte-string-into-lines
-        line = f.readline().decode()
+        
+        line = f.readline()
+        
+        if line[0] == "<":
+            break
 
         #strip the line endings and split the line into tokens
         tokens = line.strip().split()
 
         print(tokens[0])
-
-        ##ends the read after the last data line.
-            ##probably needs to be a better way to do this.
-        if tokens[0] == "WYNO":
-            break
         
         
