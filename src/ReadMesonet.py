@@ -68,31 +68,29 @@ class PyApp(gtk.Window):
 		# add the label to the scrollable container 
 		#   (labels are apparently funny with scrolls, so have to use add_with_viewport instead of just add)
 		self.main_scroller.add_with_viewport(self.tmplabel)
-		# then add the scrollable container to the main form
-		self.add(self.main_scroller)
-		# I'm not sure the difference between show and show_all, but maybe show_all initializes all the widgets?
-		self.show_all()
 		
-
+		# build the menu bar
 		mb = gtk.MenuBar()
-
 		filemenu = gtk.Menu()
 		filem = gtk.MenuItem("File")
 		filem.set_submenu(filemenu)
-
 		exit = gtk.MenuItem("Exit")
 		exit.connect("activate", gtk.main_quit)
 		filemenu.append(exit)
-
 		mb.append(filem)
 
+		# create a vbox to start laying out the geometry of the form
 		vbox = gtk.VBox(False, 2)
+		
+		# add both the menu and the main scroller to the vbox, in order (top to bottom)
 		vbox.pack_start(mb,False,False,0)
-
+		vbox.pack_start(self.main_scroller)
+		
+		# now add the entire vbox to the main form (note you can and should nest vbox's and hbox's within each other)
 		self.add(vbox)
 
-		
-
+		# I'm not sure the difference between show and show_all, but maybe show_all initializes all the widgets?
+		self.show_all()
 
 	def get_mesonet_data(self):
 
