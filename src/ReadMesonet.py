@@ -3,30 +3,22 @@
 # as a precursor, find out the python version and system platform in case they need to be checked
 import sys
 import pygtk
+import gtk
 
-## start working on the GUI
+#start working on the GUI
     ## I copied this example from here: http://zetcode.com/gui/pygtk/firststeps/
-    ## It doesn't work :(
-##class PyApp(pygtk.window):
-##    def __init__(self):
-##        #super(PyApp, self).__init__()
-##        
-##        self.set_title("Icon")
-##        self.set_size_request(250, 150)
-##        self.set_position(pygtk.WIN_POS_CENTER)
-##
-##        try:
-##            self.set_icon_from_file("WeatherIcon.png")
-##        except Exception, e:
-##            print e.message
-##            sys.exit(1)
-##
-##        self.connect("destroy", pygtk.main_quit)
-##
-##        self.show()
-##
-##PyApp()
-##pygtk.main()
+
+class PyApp(gtk.Window):
+    def __init__(self):
+        super(PyApp, self).__init__()
+        
+        self.connect("destroy", gtk.main_quit)
+        self.set_size_request(250, 150)
+        self.set_position(gtk.WIN_POS_CENTER)
+        self.show()
+
+PyApp()
+gtk.main()
 
 python_version = float("%s.%s" % (sys.version_info.major, sys.version_info.minor))
 if "linux" in sys.platform:
