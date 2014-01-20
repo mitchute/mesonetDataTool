@@ -11,7 +11,12 @@ elif "win" in sys.platform:
     platform = "windows"
 elif "darwin" in sys.platform:
 	platform = "mac"
-	
+
+# the os library allows for file system and other machine stuff
+# use it to get the current directory so we can access files relative to this
+import os
+script_dir = os.path.dirname(__file__)
+
 # I'm not actually sure if installing the pygtk all-in-one will properly include the gtk libraries
 # As such, I'll include the instructions for installing gtk first, for now, and test it out later
 # Either way, after doing the following 2
@@ -56,18 +61,16 @@ class PyApp(gtk.Window):
 		# connect signals for the GUI
 		self.connect("destroy", gtk.main_quit)
 		# set the initial requested size (may not end up this size if constrained)
-		self.set_size_request(250, 150)
+		self.set_size_request(400, 250)
 		# put the window in the center of the (primary? current?) screen
 		self.set_position(gtk.WIN_POS_CENTER)
+		# set the window title
+		self.set_title("Matts Mesonet Master")		
+		# set the window icon
+		slash = os.sep
+		self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
 		# get the text to add to the form for kicks
-		initial_text = self.get_mesonet_data()
-		# make a label out of the text
-		self.tmplabel = gtk.Label(initial_text)
-		# make a scrollable container for holding the text so you can see it all
-		self.main_scroller = gtk.ScrolledWindow()
-		# add the label to the scrollable container 
-		#   (labels are apparently funny with scrolls, so have to use add_with_viewport instead of just add)
-		self.main_scroller.add_with_viewport(self.tmplabel)
+		found_locations = self.get_mesonet_data()
 		
 		# build the menu bar
 		mb = gtk.MenuBar()
@@ -80,11 +83,40 @@ class PyApp(gtk.Window):
 		mb.append(filem)
 
 		# create a vbox to start laying out the geometry of the form
-		vbox = gtk.VBox(False, 2)
+		vbox = gtk.VBox(False)
 		
-		# add both the menu and the main scroller to the vbox, in order (top to bottom)
-		vbox.pack_start(mb,False,False,0)
-		vbox.pack_start(self.main_scroller)
+		# add the menu to the vbox
+		vbox.pack_start(mb, False, False)
+		
+		# now create the bulk of the form layout by starting with a notebook
+		self.notebook = gtk.Notebook()
+		self.notebook.set_tab_pos(gtk.POS_TOP)
+		
+		# create the list of locations
+		self.radio_button_scroller = gtk.ScrolledWindow()
+		self.radio_button_box = gtk.VBox(True)
+		self.dummy_radio = gtk.RadioButton(None, "")
+		for loc in found_locations:
+			button = gtk.RadioButton(self.dummy_radio, loc)
+			button.connect("toggled", self.location_radio_callback, loc)
+			self.radio_button_box.pack_start(button, True, True, 0)
+			button.show()			
+		self.radio_button_scroller.add_with_viewport(self.radio_button_box)
+		self.notebook.append_page(self.radio_button_scroller, gtk.Label("Location"))
+		
+		# create the list of parameters to get
+		self.which_params_scroller = gtk.ScrolledWindow()
+		self.which_params_box = gtk.VBox(True)
+		for param in ["Relative Humidity", "Air Dry Bulb", "Wind Speed", "Wind Direction", "Barometric Pressure", "Solar Radiation"]:
+			check = gtk.CheckButton(param)
+			check.connect("toggled", self.parameter_check_callback, param)
+			self.which_params_box.pack_start(check, True, True, 0)
+			check.show()
+		self.which_params_scroller.add_with_viewport(self.which_params_box)
+		self.notebook.append_page(self.which_params_scroller, gtk.Label("Which Parameters"))
+				
+		# now put the notebook in the main vbox
+		vbox.pack_start(self.notebook)
 		
 		# now add the entire vbox to the main form (note you can and should nest vbox's and hbox's within each other)
 		self.add(vbox)
@@ -92,6 +124,12 @@ class PyApp(gtk.Window):
 		# I'm not sure the difference between show and show_all, but maybe show_all initializes all the widgets?
 		self.show_all()
 
+	def location_radio_callback(self, widget, location):
+		print "Location radio callback: %s was toggled %s" % (location, ("OFF", "ON")[widget.get_active()])
+		
+	def parameter_check_callback(self, widget, param_name):
+		print "Parameter radio callback: %s was toggled %s" % (param_name, ("OFF", "ON")[widget.get_active()])
+		
 	def get_mesonet_data(self):
 
 		##array and variable initialization here
@@ -137,8 +175,8 @@ class PyApp(gtk.Window):
 
 				vals.append(tokens[0])
 								        
-		# now return a single string for now that is just each entry on a new line
-		return '\n'.join(vals)
+		# return the list of abbreviations
+		return vals
       
 # once done doing any preliminary processing, actually run the application
 main_window = PyApp()
