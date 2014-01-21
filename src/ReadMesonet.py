@@ -51,6 +51,9 @@ else:
     except:
         print("Could not import urllib, need to install it!!")
 
+param_dict = {'STID': 0,'STNM':1,'TIME':2,'RELH':3,'TAIR':4,'WSPD':5,'WVEC':6,'WDIR':7,'WDSD':8,'WSSD':9,'WMAX':10,'RAIN':11,'PRES':12,'SRAD':13,'TA9M':14,'WS2M':15,'TS10':16,'TB10':17,'TS05':18,'TS25':19,'TS60':20,'TR05':21,'TR25':22,'TR60':23}
+
+
 # Main window class and methods		
 ## Based on: http://zetcode.com/gui/pygtk/firststeps/
 class PyApp(gtk.Window):
@@ -68,7 +71,7 @@ class PyApp(gtk.Window):
 		self.set_title("Matts Mesonet Master")		
 		# set the window icon
 		slash = os.sep
-		self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
+	##	self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
 		# get the text to add to the form for kicks
 		found_locations = self.get_mesonet_data()
 		
@@ -107,7 +110,7 @@ class PyApp(gtk.Window):
 		# create the list of parameters to get
 		self.which_params_scroller = gtk.ScrolledWindow()
 		self.which_params_box = gtk.VBox(True)
-		for param in ["Relative Humidity", "Air Dry Bulb", "Wind Speed", "Wind Direction", "Barometric Pressure", "Solar Radiation"]:
+		for param in sorted(param_dict):
 			check = gtk.CheckButton(param)
 			check.connect("toggled", self.parameter_check_callback, param)
 			self.which_params_box.pack_start(check, True, True, 0)
