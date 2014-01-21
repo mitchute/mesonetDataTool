@@ -72,7 +72,7 @@ class PyApp(gtk.Window):
         self.set_title("Matts Mesonet Master")      
         # set the window icon
         slash = os.sep
-    ##  self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
+        self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
         # get the text to add to the form for kicks
         found_locations = self.get_mesonet_data(param_dict['STID'])
         
