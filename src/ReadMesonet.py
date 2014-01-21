@@ -147,7 +147,8 @@ class PyApp(gtk.Window):
         time_frame_zone = gtk.HBox(True)
         time_frame_zone.pack_start(self.time_frame_utc_radio)
         time_frame_zone.pack_start(self.time_frame_cst_radio)
-        
+
+       
         ##### START SIDE #####
         
         # build a START label
@@ -168,23 +169,23 @@ class PyApp(gtk.Window):
         
         # create spinners for the TIME
         self.datetimes_start_time_hours = gtk.SpinButton()
-        self.datetimes_start_time_hours.set_range(1,23)
+        self.datetimes_start_time_hours.set_range(0,23)
         self.datetimes_start_time_hours.set_increments(1,3)
         self.datetimes_start_time_hours.connect("value-changed", self.hours_changed, "start")
         self.datetimes_start_time_minutes = gtk.SpinButton()
-        self.datetimes_start_time_minutes.set_range(1,59)
-        self.datetimes_start_time_minutes.set_increments(1,3)
+        self.datetimes_start_time_minutes.set_range(0,55)
+        self.datetimes_start_time_minutes.set_increments(5,3)
         self.datetimes_start_time_minutes.connect("value-changed", self.minutes_changed, "start")
-        self.datetimes_start_time_seconds = gtk.SpinButton()
-        self.datetimes_start_time_seconds.set_range(1,59)
-        self.datetimes_start_time_seconds.set_increments(1,3)
-        self.datetimes_start_time_seconds.connect("value-changed", self.seconds_changed, "start")
+##        self.datetimes_start_time_seconds = gtk.SpinButton()
+##        self.datetimes_start_time_seconds.set_range(1,59)
+##        self.datetimes_start_time_seconds.set_increments(1,3)
+##        self.datetimes_start_time_seconds.connect("value-changed", self.seconds_changed, "start")
         
         # initialize the time to "now"
         print "**Initializing end time values"
         self.datetimes_start_time_hours.set_value(now.hour)
         self.datetimes_start_time_minutes.set_value(now.minute)
-        self.datetimes_start_time_seconds.set_value(now.second)
+##        self.datetimes_start_time_seconds.set_value(now.second)
         
         # now pack the time spinners in an hbox
         datetimes_start_time_box = gtk.HBox(True)
@@ -192,9 +193,9 @@ class PyApp(gtk.Window):
         datetimes_start_time_box.pack_start(self.datetimes_start_time_hours, False, False)
         datetimes_start_time_box.pack_start(gtk.Label(":"))
         datetimes_start_time_box.pack_start(self.datetimes_start_time_minutes, False, False)
-        datetimes_start_time_box.pack_start(gtk.Label(":"))
-        datetimes_start_time_box.pack_start(self.datetimes_start_time_seconds, False, False)
-        datetimes_start_time_box.pack_start(gtk.Label("    "))
+##        datetimes_start_time_box.pack_start(gtk.Label(":"))
+##        datetimes_start_time_box.pack_start(self.datetimes_start_time_seconds, False, False)
+##        datetimes_start_time_box.pack_start(gtk.Label("    "))
         
         # drop the everything in to create the START side
         datetimes_start_box = gtk.VBox(False)
@@ -224,23 +225,23 @@ class PyApp(gtk.Window):
         
         # create spinners for the TIME
         self.datetimes_end_time_hours = gtk.SpinButton()
-        self.datetimes_end_time_hours.set_range(1,23)
+        self.datetimes_end_time_hours.set_range(0,23)
         self.datetimes_end_time_hours.set_increments(1,3)
         self.datetimes_end_time_hours.connect("value-changed", self.hours_changed, "end")
         self.datetimes_end_time_minutes = gtk.SpinButton()
-        self.datetimes_end_time_minutes.set_range(1,59)
-        self.datetimes_end_time_minutes.set_increments(1,3)
+        self.datetimes_end_time_minutes.set_range(0,55)
+        self.datetimes_end_time_minutes.set_increments(5,3)
         self.datetimes_end_time_minutes.connect("value-changed", self.minutes_changed, "end")
-        self.datetimes_end_time_seconds = gtk.SpinButton()
-        self.datetimes_end_time_seconds.set_range(1,59)
-        self.datetimes_end_time_seconds.set_increments(1,3)
-        self.datetimes_end_time_seconds.connect("value-changed", self.seconds_changed, "end")
+##        self.datetimes_end_time_seconds = gtk.SpinButton()
+##        self.datetimes_end_time_seconds.set_range(1,59)
+##        self.datetimes_end_time_seconds.set_increments(1,3)
+##        self.datetimes_end_time_seconds.connect("value-changed", self.seconds_changed, "end")
        
         # initialize the time to "now"
         print "**Initializing end time values"
         self.datetimes_end_time_hours.set_value(now.hour)
         self.datetimes_end_time_minutes.set_value(now.minute)
-        self.datetimes_end_time_seconds.set_value(now.second)
+##        self.datetimes_end_time_seconds.set_value(now.second)
         
         # now pack the time spinners in an hbox
         datetimes_end_time_box = gtk.HBox(True)
@@ -248,9 +249,9 @@ class PyApp(gtk.Window):
         datetimes_end_time_box.pack_start(self.datetimes_end_time_hours)
         datetimes_end_time_box.pack_start(gtk.Label(":"))
         datetimes_end_time_box.pack_start(self.datetimes_end_time_minutes)
-        datetimes_end_time_box.pack_start(gtk.Label(":"))
-        datetimes_end_time_box.pack_start(self.datetimes_end_time_seconds)
-        datetimes_end_time_box.pack_start(gtk.Label("    "))
+##        datetimes_end_time_box.pack_start(gtk.Label(":"))
+##        datetimes_end_time_box.pack_start(self.datetimes_end_time_seconds)
+##        datetimes_end_time_box.pack_start(gtk.Label("    "))
         
         datetimes_end_box = gtk.VBox(False)
         datetimes_end_box.pack_start(end_label, False)
@@ -270,6 +271,17 @@ class PyApp(gtk.Window):
         main_datetimes_box.pack_start(datetimes_details_box)
         
         self.notebook.append_page(main_datetimes_box, gtk.Label("Dates and Times"))
+
+        # create the selection of output reports
+        self.which_params_scroller = gtk.ScrolledWindow()
+        self.which_params_box = gtk.VBox(True)
+##        for param in sorted(param_dict):
+##            check = gtk.CheckButton(param)
+##            check.connect("toggled", self.parameter_check_callback, param)
+##            self.which_params_box.pack_start(check, True, True, 0)
+##            check.show()
+        self.which_params_scroller.add_with_viewport(self.which_params_box)
+        self.notebook.append_page(self.which_params_scroller, gtk.Label("Output Reports"))
                 
         # now put the notebook in the main vbox
         vbox.pack_start(self.notebook)
@@ -307,8 +319,8 @@ class PyApp(gtk.Window):
     def minutes_changed(self, widget, start_or_end):
         print "%s minutes changed, new value = %s" % (start_or_end, widget.get_value())
     
-    def seconds_changed(self, widget, start_or_end):
-        print "%s seconds changed, new value = %s" % (start_or_end, widget.get_value())
+##    def seconds_changed(self, widget, start_or_end):
+##        print "%s seconds changed, new value = %s" % (start_or_end, widget.get_value())
              
     def get_mesonet_data(self,index):
 
