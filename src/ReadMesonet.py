@@ -122,6 +122,7 @@ class PyApp(gtk.Window):
 			# want to use comboboxes
 		self.which_params_scroller = gtk.ScrolledWindow()
 		self.which_params_box = gtk.VBox(True)
+		combobox = gtk.combo_box_new_text()
 		#for param in sorted(param_dict):
 			#check = gtk.CheckButton(param)
 			#check.connect("toggled", self.parameter_check_callback, param)
