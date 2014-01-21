@@ -58,7 +58,7 @@ from datetime import datetime
 # Main window class and methods     
 ## Based on: http://zetcode.com/gui/pygtk/firststeps/
 class PyApp(gtk.Window):
-    
+
     def __init__(self):
         # initialize the parent class
         super(PyApp, self).__init__()
