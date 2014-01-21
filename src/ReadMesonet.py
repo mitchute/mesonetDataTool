@@ -73,7 +73,7 @@ class PyApp(gtk.Window):
 		slash = os.sep
 	##	self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
 		# get the text to add to the form for kicks
-		found_locations = self.get_mesonet_data()
+		found_locations = self.get_mesonet_data(param_dict['STID'])
 		
 		# build the menu bar
 		mb = gtk.MenuBar()
@@ -117,6 +117,18 @@ class PyApp(gtk.Window):
 			check.show()
 		self.which_params_scroller.add_with_viewport(self.which_params_box)
 		self.notebook.append_page(self.which_params_scroller, gtk.Label("Which Parameters"))
+		
+		# get start and end dates and times
+			# want to use comboboxes
+		self.which_params_scroller = gtk.ScrolledWindow()
+		self.which_params_box = gtk.VBox(True)
+		#for param in sorted(param_dict):
+			#check = gtk.CheckButton(param)
+			#check.connect("toggled", self.parameter_check_callback, param)
+			#self.which_params_box.pack_start(check, True, True, 0)
+			#check.show()
+		self.which_params_scroller.add_with_viewport(self.which_params_box)
+		self.notebook.append_page(self.which_params_scroller, gtk.Label("Dates and Times"))
 				
 		# now put the notebook in the main vbox
 		vbox.pack_start(self.notebook)
@@ -133,7 +145,7 @@ class PyApp(gtk.Window):
 	def parameter_check_callback(self, widget, param_name):
 		print "Parameter radio callback: %s was toggled %s" % (param_name, ("OFF", "ON")[widget.get_active()])
 		
-	def get_mesonet_data(self):
+	def get_mesonet_data(self,index):
 
 		##array and variable initialization here
 		vals = []
@@ -176,7 +188,7 @@ class PyApp(gtk.Window):
 				#strip the line endings and split the line into tokens
 				tokens = line.strip().split()
 
-				vals.append(tokens[0])
+				vals.append(tokens[index])
 								        
 		# return the list of abbreviations
 		return vals
