@@ -72,7 +72,7 @@ class PyApp(gtk.Window):
         self.set_title("Matts Mesonet Master")      
         # set the window icon
         slash = os.sep
-        self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
+        ##self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
         # get the text to add to the form for kicks
         found_locations = self.get_mesonet_data(param_dict['STID'])
         
@@ -184,14 +184,19 @@ class PyApp(gtk.Window):
         # initialize the time to "now"
         print "**Initializing end time values"
         self.datetimes_start_time_hours.set_value(now.hour)
-        self.datetimes_start_time_minutes.set_value(now.minute)
+        ## rounds the current minute back to the nearest 5 minute interval
+        if now.minute < 5:
+			minute = 0
+		else:
+			minute = now.minute - now.minute % 5 	
+        self.datetimes_start_time_minutes.set_value(minute)
 ##        self.datetimes_start_time_seconds.set_value(now.second)
         
         # now pack the time spinners in an hbox
         datetimes_start_time_box = gtk.HBox(True)
-        datetimes_start_time_box.pack_start(gtk.Label("    "))
+        datetimes_start_time_box.pack_start(gtk.Label("Hour"))
         datetimes_start_time_box.pack_start(self.datetimes_start_time_hours, False, False)
-        datetimes_start_time_box.pack_start(gtk.Label(":"))
+        datetimes_start_time_box.pack_start(gtk.Label("min"))
         datetimes_start_time_box.pack_start(self.datetimes_start_time_minutes, False, False)
 ##        datetimes_start_time_box.pack_start(gtk.Label(":"))
 ##        datetimes_start_time_box.pack_start(self.datetimes_start_time_seconds, False, False)
@@ -245,9 +250,9 @@ class PyApp(gtk.Window):
         
         # now pack the time spinners in an hbox
         datetimes_end_time_box = gtk.HBox(True)
-        datetimes_end_time_box.pack_start(gtk.Label("    "))
+        datetimes_end_time_box.pack_start(gtk.Label("Hour"))
         datetimes_end_time_box.pack_start(self.datetimes_end_time_hours)
-        datetimes_end_time_box.pack_start(gtk.Label(":"))
+        datetimes_end_time_box.pack_start(gtk.Label("Min."))
         datetimes_end_time_box.pack_start(self.datetimes_end_time_minutes)
 ##        datetimes_end_time_box.pack_start(gtk.Label(":"))
 ##        datetimes_end_time_box.pack_start(self.datetimes_end_time_seconds)
