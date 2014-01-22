@@ -74,7 +74,8 @@ class PyApp(gtk.Window):
         slash = os.sep
         self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
         # get the text to add to the form for kicks
-        found_locations = self.get_mesonet_data(param_dict['STID'])
+        found_locations = self.get_mesonet_data(param_dict['STID'],1)
+        data_labels = self.get_mesonet_data(0,0)
         
         # for convenience later
         now = datetime.now()
@@ -129,9 +130,9 @@ class PyApp(gtk.Window):
         # create the list of parameters to get
         self.which_params_scroller = gtk.ScrolledWindow()
         self.which_params_box = gtk.VBox(True)
-        for param in sorted(param_dict):
-            check = gtk.CheckButton(param)
-            check.connect("toggled", self.parameter_check_callback, param)
+        for label in data_labels:
+            check = gtk.CheckButton(label)
+            check.connect("toggled", self.parameter_check_callback, label)
             self.which_params_box.pack_start(check, True, True, 0)
             check.show()
         self.which_params_scroller.add_with_viewport(self.which_params_box)
@@ -310,11 +311,12 @@ class PyApp(gtk.Window):
     def minutes_changed(self, widget, start_or_end):
         print "%s minutes changed, new value = %s" % (start_or_end, widget.get_value())
                 
-    def get_mesonet_data(self,index):
+    def get_mesonet_data(self,index,dataFlag):
 
         ##array and variable initialization here
         vals = []
         f = ""
+        labels = []
 
         ##src URL link
         link = "http://www.mesonet.org/index.php/dataMdfMts/dataController/getFile/201401150000/mdf/TEXT/"
@@ -339,7 +341,10 @@ class PyApp(gtk.Window):
 
             ##skip the header lines
             if headerlines > 0:
-                line = f.readline()
+                if headerlines  == 1:
+                    labels = line.strip().split
+                    
+                line = f.readline().decode()
                 headerlines -= 1
 
             ##read the rest of the lines in the file
@@ -354,9 +359,11 @@ class PyApp(gtk.Window):
                 tokens = line.strip().split()
 
                 vals.append(tokens[index])
-                                        
-        # return the list of abbreviations
-        return vals
+        if dataFlag == 1:                           
+            # return the list of abbreviations
+            return vals
+        elif dataFlag == 0:
+            return labels
       
 # once done doing any preliminary processing, actually run the application
 main_window = PyApp()
