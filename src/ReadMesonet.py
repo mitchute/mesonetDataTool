@@ -51,8 +51,6 @@ else:
     except:
         print("Could not import urllib, need to install it!!")
 
-param_dict = {'STID': 0,'STNM':1,'TIME':2,'RELH':3,'TAIR':4,'WSPD':5,'WVEC':6,'WDIR':7,'WDSD':8,'WSSD':9,'WMAX':10,'RAIN':11,'PRES':12,'SRAD':13,'TA9M':14,'WS2M':15,'TS10':16,'TB10':17,'TS05':18,'TS25':19,'TS60':20,'TR05':21,'TR25':22,'TR60':23}
-
 from datetime import datetime
 
 # Main window class and methods     
@@ -74,7 +72,7 @@ class PyApp(gtk.Window):
         slash = os.sep
         self.set_icon_from_file(script_dir + slash + ".." + slash + "resources" + slash + "main_icon.ico")
         # get the text to add to the form for kicks
-        found_locations = self.get_mesonet_data(param_dict['STID'],1)
+        found_locations = self.get_mesonet_data(0,1)
         data_labels = self.get_mesonet_data(0,0)
         
         # for convenience later
@@ -342,7 +340,7 @@ class PyApp(gtk.Window):
             ##skip the header lines
             if headerlines > 0:
                 if headerlines  == 1:
-                    labels = line.strip().split
+                    labels = line.strip().split()
                     
                 line = f.readline().decode()
                 headerlines -= 1
