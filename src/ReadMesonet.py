@@ -12,6 +12,8 @@ elif "win" in sys.platform:
 elif "darwin" in sys.platform:
     platform = "mac"
 
+## Hi! I'm a comment.
+
 # the os library allows for file system and other machine stuff
 # use it to get the current directory so we can access files relative to this
 import os
